@@ -10,18 +10,28 @@ class AppSettings(BaseSettings):
     APP_SUMMARY: str
     APP_DESCRIPTION: str
 
+    # JWT
+    JWT_ALGORITHM: str
+    JWT_ACCESS_SECRET_KEY: str
+    JWT_ACCESS_TOKEN_EXP_MINUTE: int
+
+    # Adminka
+    ADMIN_SECRET_KEY: str
+
+    # Postgres
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_USER: str
     POSTGRES_PASS: SecretStr
     POSTGRES_NAME: str
 
+    # Redis
     REDIS_HOST: str
     REDIS_PORT: int
     REDIS_USER: str
     REDIS_PASSWORD: SecretStr
 
-    # Testing
+    # Postgres Testing
     POSTGRES_HOST_TEST: str
     POSTGRES_PORT_TEST: int
     POSTGRES_USER_TEST: str

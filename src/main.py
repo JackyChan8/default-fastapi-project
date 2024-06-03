@@ -1,12 +1,10 @@
-from fastapi import FastAPI, Depends
+from sqladmin import Admin
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.database.database import get_async_session
-
 from src.config import settings
-from src.schemas import schemas
-from src.services import services
+from src.database.database import engine
+from src.adminka import UserAdmin, ProjectAdmin, CredentialsAdmin, authentication_backend
 
 
 @asynccontextmanager
@@ -24,14 +22,9 @@ app = FastAPI(
     summary=settings.APP_SUMMARY,
 )
 
+# Adminka
+admin = Admin(app, engine, authentication_backend=authentication_backend)
 
-@app.post('/')
-async def create_test(data: schemas.TestCreate, db: AsyncSession = Depends(get_async_session)):
-    test = await services.create_test(db, data)
-    return test
-
-
-@app.get('/{test_id}')
-async def get_test_by_id(test_id: int, db: AsyncSession = Depends(get_async_session)):
-    test = await services.get_test(db, test_id)
-    return test
+admin.add_view(UserAdmin)
+admin.add_view(ProjectAdmin)
+admin.add_view(CredentialsAdmin)
